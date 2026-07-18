@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#072c25" />
+  <title>Faisal & Zara — Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Naskh+Arabic:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green:#052e27;
+      --green-2:#08372f;
+      --green-3:#0d4338;
+      --cream:#f7f0df;
+      --muted:#c8bea5;
+      --gold:#e0bd67;
+      --gold-2:#f0d78f;
+      --line:rgba(224,189,103,.38);
+      --card:rgba(255,255,255,.055);
+      --shadow:0 24px 70px rgba(0,0,0,.28);
+      --serif:"Cormorant Garamond", serif;
+      --sans:"Inter", sans-serif;
+      --arabic:"Noto Naskh Arabic", serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--green)}
+    body{margin:0;background:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+      radial-gradient(circle at 50% 18%, rgba(224,189,103,.08), transparent 34%),
+      linear-gradient(180deg,var(--green),#031f1a 100%);
+      background-size:32px 32px,32px 32px,auto,auto;
+      color:var(--cream);font-family:var(--sans);overflow-x:hidden}
+    body.locked{overflow:hidden}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+
+    .door-screen{position:fixed;inset:0;z-index:1000;display:grid;grid-template-columns:1fr 1fr;pointer-events:none;background:#021713}
+    .door{position:relative;background:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+      radial-gradient(circle at 50% 50%,rgba(224,189,103,.06),transparent 40%),
+      #062d26;background-size:28px 28px,28px 28px,auto,auto;
+      border-color:rgba(224,189,103,.45);border-style:solid;transition:transform 1.15s cubic-bezier(.7,0,.2,1)}
+    .door.left{border-width:0 1px 0 0;transform-origin:left center}
+    .door.right{border-width:0 0 0 1px;transform-origin:right center}
+    .door::after{content:"";position:absolute;inset:8%;border:1px solid rgba(224,189,103,.28);border-radius:18px}
+    .door-screen.open .left{transform:translateX(-101%)}
+    .door-screen.open .right{transform:translateX(101%)}
+    .door-screen.hide{display:none}
+    .door-mark{position:fixed;z-index:1001;inset:0;display:grid;place-items:center;pointer-events:none;transition:opacity .5s ease,transform .5s ease}
+    .door-mark span{font-family:var(--serif);font-size:clamp(42px,13vw,84px);color:var(--cream);letter-spacing:.02em;text-shadow:0 0 30px rgba(224,189,103,.22)}
+    .door-mark.fade{opacity:0;transform:scale(.95)}
+
+    .page{opacity:0;filter:blur(8px);transition:opacity .8s ease,filter .8s ease}
+    .page.ready{opacity:1;filter:none}
+    .section{position:relative;padding:88px 20px;max-width:980px;margin:0 auto}
+    .hero{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:42px;padding-bottom:42px}
+    .hero-inner{width:min(100%,620px)}
+    .spark{color:var(--gold-2);font-size:24px;margin-bottom:18px}
+    .verse{font-family:var(--arabic);font-size:clamp(24px,7.4vw,38px);line-height:1.6;color:var(--gold-2);margin:0 auto 6px;max-width:560px}
+    .translation{font-family:var(--serif);font-size:20px;color:var(--cream);margin:0}
+    .reference{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:6px 0 22px}
+    .bismillah{font-family:var(--arabic);font-size:clamp(42px,12vw,78px);line-height:1.2;color:var(--gold-2);margin:6px 0 18px}
+    .eyebrow{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600}
+    .names{font-family:var(--serif);font-size:clamp(74px,22vw,136px);font-weight:600;line-height:.72;margin:28px 0 26px;letter-spacing:-.045em}
+    .names .amp{display:block;color:var(--gold);font-size:.56em;line-height:1.3;font-weight:500}
+    .invite-copy{font-family:var(--serif);font-size:clamp(20px,5.3vw,27px);line-height:1.45;color:var(--muted);max-width:440px;margin:0 auto 32px}
+    .primary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 34px;border-radius:999px;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#10251f;font-weight:700;box-shadow:0 14px 40px rgba(224,189,103,.18);border:0;cursor:pointer}
+    .music{position:fixed;right:16px;bottom:16px;z-index:50;width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:rgba(4,38,32,.78);backdrop-filter:blur(10px);color:var(--gold-2);display:grid;place-items:center;box-shadow:var(--shadow);cursor:pointer}
+
+    .section-head{text-align:center;margin-bottom:34px}
+    .section-head h2{font-family:var(--serif);font-size:clamp(52px,14vw,82px);line-height:.95;margin:10px 0 0}
+    .ornament{height:1px;width:104px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto 0}
+
+    .countdown-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .count-card{min-height:120px;border:1px solid var(--line);border-radius:22px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 1px rgba(255,255,255,.05)}
+    .count-card strong{font-family:var(--serif);font-size:52px;color:var(--gold-2);line-height:1}
+    .count-card span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+    .events{padding-top:54px}
+    .event-list{display:grid;gap:18px}
+    .event-card{position:relative;border:1px solid var(--line);border-radius:28px;padding:28px 24px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));overflow:hidden;box-shadow:var(--shadow)}
+    .event-card::before{content:"";position:absolute;width:130px;height:130px;border:1px solid rgba(224,189,103,.25);border-radius:50%;right:-55px;top:-62px}
+    .event-label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+    .event-card h3{font-family:var(--serif);font-size:36px;margin:8px 0 22px;line-height:1.05}
+    .detail{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:14px 0;border-top:1px solid rgba(224,189,103,.26);align-items:start}
+    .detail span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+    .detail strong{font-size:15px;line-height:1.5;color:var(--cream)}
+    .location-btn{margin-top:18px;width:100%;min-height:50px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold-2);font-weight:700;display:flex;align-items:center;justify-content:center}
+
+    .family-box,.memory-box{border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.04);box-shadow:var(--shadow);overflow:hidden}
+    .family-box{padding:36px 22px;text-align:center}
+    .family-box h2,.memory-copy h2{font-family:var(--serif);font-size:48px;margin:8px 0 12px}
+    .script{font-family:var(--serif);font-style:italic;color:var(--gold-2);font-size:42px;margin:0 0 18px}
+    .family-names{font-family:var(--serif);font-size:24px;line-height:1.7;color:var(--cream)}
+    .family-note{color:var(--muted);line-height:1.7;margin-top:12px}
+
+    .memory-box{display:grid;grid-template-columns:1fr;background:linear-gradient(145deg,rgba(15,26,22,.86),rgba(35,25,15,.74))}
+    .memory-photo{min-height:320px;background:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.32)),url('assets/ustad-zaheer.jpg') center/cover no-repeat;display:grid;place-items:center}
+    .photo-placeholder{width:150px;height:190px;border:1px dashed rgba(224,189,103,.65);border-radius:12px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:13px;padding:18px;background:rgba(0,0,0,.15)}
+    .memory-copy{padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+    .memory-copy p{color:var(--muted);line-height:1.8;max-width:440px;margin:0 auto}
+    .heart{color:var(--gold-2);font-size:24px;margin-top:18px}
+
+    footer{text-align:center;padding:0 22px 88px;color:var(--muted);font-family:var(--serif);font-size:21px;line-height:1.55}
+
+    .reveal{opacity:0;transform:translateY(36px);filter:blur(6px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1),filter .8s ease}
+    .reveal.visible{opacity:1;transform:none;filter:none}
+
+    @media(min-width:760px){
+      .section{padding-left:34px;padding-right:34px}
+      .hero{min-height:900px}
+      .countdown-grid{grid-template-columns:repeat(4,1fr)}
+      .event-list{grid-template-columns:repeat(3,1fr)}
+      .event-card{padding:28px 22px}
+      .detail{grid-template-columns:86px 1fr}
+      .memory-box{grid-template-columns:.9fr 1.1fr}
+      .memory-photo{min-height:430px}
+    }
+    @media(max-width:380px){
+      .names{font-size:68px}
+      .section{padding-left:16px;padding-right:16px}
+      .event-card{padding:24px 19px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+      .door-screen,.door-mark{display:none!important}.page{opacity:1!important;filter:none!important}.reveal{opacity:1!important;transform:none!important;filter:none!important}
+    }
+  </style>
+</head>
+<body class="locked">
+  <div class="door-screen" id="doors"><div class="door left"></div><div class="door right"></div></div>
+  <div class="door-mark" id="doorMark"><span>F & Z</span></div>
+
+  <button class="music" id="musicBtn" aria-label="Toggle music">♪</button>
+  <audio id="music" loop preload="none"><source src="assets/music.mp3" type="audio/mpeg"></audio>
+
+  <main class="page" id="page">
+    <section class="hero section">
+      <div class="hero-inner reveal visible">
+        <div class="spark">✦</div>
+        <p class="verse" lang="ar" dir="rtl">وَمِنْ كُلِّ شَيْءٍ خَلَقْنَا زَوْجَيْنِ لَعَلَّكُمْ تَذَكَّرُونَ</p>
+        <p class="translation">“And We created you in pairs.”</p>
+        <p class="reference">Qur’an 51:49</p>
+        <div class="bismillah" lang="ar" dir="rtl">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+        <div class="eyebrow">Together with their families</div>
+        <h1 class="names">Faisal<span class="amp">&</span>Zara</h1>
+        <p class="invite-copy">request the pleasure of your company at their wedding celebrations</p>
+        <a class="primary-btn" href="#events">View Invitation</a>
+      </div>
+    </section>
+
+    <section class="section reveal" id="countdown">
+      <div class="section-head">
+        <div class="eyebrow">The celebration begins in</div>
+        <h2>Barat Countdown</h2>
+        <div class="ornament"></div>
+      </div>
+      <div class="countdown-grid">
+        <div class="count-card"><strong id="days">00</strong><span>Days</span></div>
+        <div class="count-card"><strong id="hours">00</strong><span>Hours</span></div>
+        <div class="count-card"><strong id="minutes">00</strong><span>Minutes</span></div>
+        <div class="count-card"><strong id="seconds">00</strong><span>Seconds</span></div>
+      </div>
+    </section>
+
+    <section class="section events" id="events">
+      <div class="section-head reveal">
+        <div class="eyebrow">Wedding Events</div>
+        <h2>Join Us</h2>
+        <div class="ornament"></div>
+      </div>
+      <div class="event-list">
+        <article class="event-card reveal">
+          <div class="event-label">Mehndi</div>
+          <h3>Tuesday, 28 July 2026</h3>
+          <div class="detail"><span>Time</span><strong>6:00 PM onwards</strong></div>
+          <div class="detail"><span>Venue</span><strong>Add Mehndi Venue<br>Jhelum, Pakistan</strong></div>
+          <a class="location-btn" href="#" target="_blank" rel="noopener">View Location</a>
+        </article>
+        <article class="event-card reveal">
+          <div class="event-label">Barat</div>
+          <h3>Thursday, 30 July 2026</h3>
+          <div class="detail"><span>Arrival</span><strong>6:00 PM</strong></div>
+          <div class="detail"><span>Venue</span><strong>Add Barat Venue<br>Jhelum, Pakistan</strong></div>
+          <a class="location-btn" href="#" target="_blank" rel="noopener">View Location</a>
+        </article>
+        <article class="event-card reveal">
+          <div class="event-label">Walima</div>
+          <h3>Friday, 31 July 2026</h3>
+          <div class="detail"><span>Reception</span><strong>7:30 PM onwards</strong></div>
+          <div class="detail"><span>Venue</span><strong>Add Walima Venue<br>Jhelum, Pakistan</strong></div>
+          <a class="location-btn" href="#" target="_blank" rel="noopener">View Location</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="family">
+      <div class="family-box">
+        <div class="eyebrow">Waiting Eyes</div>
+        <h2>Our Family</h2>
+        <div class="script">With love and anticipation</div>
+        <div class="family-names">Chachu Name One<br>Chachu Name Two<br>Chachu Name Three</div>
+        <p class="family-note">We look forward to celebrating this beautiful occasion with you.</p>
+      </div>
+    </section>
+
+    <section class="section reveal" id="memory">
+      <div class="memory-box">
+        <div class="memory-photo"><div class="photo-placeholder">Add the photo as<br><strong>assets/ustad-zaheer.jpg</strong></div></div>
+        <div class="memory-copy">
+          <div class="eyebrow">In Loving Memory Of</div>
+          <h2>Ustad Zaheer</h2>
+          <div class="ornament"></div>
+          <p>Your love, guidance, and memories remain forever in our hearts. Though deeply missed, your presence will be felt in every prayer and every joyful moment of this celebration.</p>
+          <div class="heart">♥</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="reveal">Your presence and prayers will make our celebration truly special.</footer>
+  </main>
+
+  <script>
+    const doors=document.getElementById('doors');
+    const doorMark=document.getElementById('doorMark');
+    const page=document.getElementById('page');
+    window.addEventListener('load',()=>{
+      setTimeout(()=>{doors.classList.add('open');doorMark.classList.add('fade')},450);
+      setTimeout(()=>{doors.classList.add('hide');doorMark.style.display='none';page.classList.add('ready');document.body.classList.remove('locked')},1650);
+    });
+
+    const reveals=document.querySelectorAll('.reveal:not(.visible)');
+    const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.14});
+    reveals.forEach(el=>observer.observe(el));
+
+    const target=new Date('2026-07-30T18:00:00+05:00').getTime();
+    function updateCountdown(){
+      const diff=Math.max(0,target-Date.now());
+      const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+      document.getElementById('days').textContent=String(d).padStart(2,'0');
+      document.getElementById('hours').textContent=String(h).padStart(2,'0');
+      document.getElementById('minutes').textContent=String(m).padStart(2,'0');
+      document.getElementById('seconds').textContent=String(s).padStart(2,'0');
+    }
+    updateCountdown();setInterval(updateCountdown,1000);
+
+    const music=document.getElementById('music');const musicBtn=document.getElementById('musicBtn');
+    musicBtn.addEventListener('click',async()=>{
+      try{if(music.paused){await music.play();musicBtn.textContent='❚❚'}else{music.pause();musicBtn.textContent='♪'}}catch(e){musicBtn.textContent='♪'}
+    });
+  </script>
+</body>
+</html>
