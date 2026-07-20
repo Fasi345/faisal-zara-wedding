@@ -37,22 +37,27 @@
     a{text-decoration:none;color:inherit}
     button{font:inherit}
 
-    .door-screen{position:fixed;inset:0;z-index:1000;display:grid;grid-template-columns:1fr 1fr;pointer-events:none;background:#021713}
+    .door-screen{position:fixed;inset:0;z-index:1000;display:grid;grid-template-columns:1fr 1fr;background:#021713;overflow:hidden}
     .door{position:relative;background:
       linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
       radial-gradient(circle at 50% 50%,rgba(224,189,103,.06),transparent 40%),
       #062d26;background-size:28px 28px,28px 28px,auto,auto;
-      border-color:rgba(224,189,103,.45);border-style:solid;transition:transform 1.15s cubic-bezier(.7,0,.2,1)}
+      border-color:rgba(224,189,103,.45);border-style:solid;transition:transform 1.35s cubic-bezier(.7,0,.2,1)}
     .door.left{border-width:0 1px 0 0;transform-origin:left center}
     .door.right{border-width:0 0 0 1px;transform-origin:right center}
-    .door::after{content:"";position:absolute;inset:8%;border:1px solid rgba(224,189,103,.28);border-radius:18px}
+    .door::after{content:"";position:absolute;inset:8%;border:1px solid rgba(224,189,103,.32);border-radius:18px}
+    .door-word{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-size:clamp(25px,5vw,60px);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-2);text-shadow:0 4px 20px rgba(0,0,0,.65);white-space:nowrap}
+    .door-handle{position:absolute;z-index:3;top:50%;width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;transform:translateY(-50%);box-shadow:0 0 18px rgba(224,189,103,.15)}
+    .left .door-handle{right:18px}.right .door-handle{left:18px}
     .door-screen.open .left{transform:translateX(-101%)}
     .door-screen.open .right{transform:translateX(101%)}
     .door-screen.hide{display:none}
-    .door-mark{position:fixed;z-index:1001;inset:0;display:grid;place-items:center;pointer-events:none;transition:opacity .5s ease,transform .5s ease}
-    .door-mark span{font-family:var(--serif);font-size:clamp(42px,13vw,84px);color:var(--cream);letter-spacing:.02em;text-shadow:0 0 30px rgba(224,189,103,.22)}
-    .door-mark.fade{opacity:0;transform:scale(.95)}
+    .door-open-wrap{position:fixed;z-index:1002;left:50%;bottom:max(38px,calc(26px + env(safe-area-inset-bottom)));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;transition:opacity .45s ease,transform .45s ease}
+    .door-open-wrap.fade{opacity:0;transform:translateX(-50%) translateY(12px);pointer-events:none}
+    .open-invitation-btn{min-width:230px;min-height:54px;padding:0 30px;border:0;border-radius:999px;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#10251f;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;box-shadow:0 14px 40px rgba(224,189,103,.24);animation:inviteBounce 1.65s ease-in-out infinite}
+    .door-open-wrap small{color:var(--muted);font-size:12px;letter-spacing:.08em}
+    @keyframes inviteBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
     .page{opacity:0;filter:blur(8px);transition:opacity .8s ease,filter .8s ease}
     .page.ready{opacity:1;filter:none}
@@ -94,12 +99,14 @@
     .family-box,.memory-box{border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.04);box-shadow:var(--shadow);overflow:hidden}
     .family-box{padding:36px 22px;text-align:center}
     .family-box h2,.memory-copy h2{font-family:var(--serif);font-size:48px;margin:8px 0 12px}
+    .waiting-eyes-title{font-family:var(--serif);font-size:clamp(58px,15vw,96px);line-height:.92;letter-spacing:.04em;color:var(--cream);margin:0 0 28px;text-transform:uppercase}
     .script{font-family:var(--serif);font-style:italic;color:var(--gold-2);font-size:42px;margin:0 0 18px}
     .family-names{font-family:var(--serif);font-size:24px;line-height:1.7;color:var(--cream)}
     .family-note{color:var(--muted);line-height:1.7;margin-top:12px}
 
     .memory-box{display:grid;grid-template-columns:1fr;background:linear-gradient(145deg,rgba(15,26,22,.86),rgba(35,25,15,.74))}
-    .memory-photo{min-height:320px;background:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.32)),url('assets/ustad-zaheer.jpg') center/cover no-repeat;display:grid;place-items:center}
+    .memory-photo{min-height:320px;padding:18px;background:linear-gradient(145deg,rgba(4,35,29,.96),rgba(18,18,14,.9));display:grid;place-items:center}
+    .memory-photo img{width:100%;height:100%;max-height:430px;object-fit:contain;border-radius:18px;border:1px solid rgba(224,189,103,.35);background:#071712}
     .photo-placeholder{width:150px;height:190px;border:1px dashed rgba(224,189,103,.65);border-radius:12px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:13px;padding:18px;background:rgba(0,0,0,.15)}
     .memory-copy{padding:34px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center}
     .memory-copy p{color:var(--muted);line-height:1.8;max-width:440px;margin:0 auto}
@@ -114,7 +121,7 @@
       .section{padding-left:34px;padding-right:34px}
       .hero{min-height:900px}
       .countdown-grid{grid-template-columns:repeat(4,1fr)}
-      .event-list{grid-template-columns:repeat(3,1fr)}
+      .event-list{grid-template-columns:repeat(2,1fr)}
       .event-card{padding:28px 22px}
       .detail{grid-template-columns:86px 1fr}
       .memory-box{grid-template-columns:.9fr 1.1fr}
@@ -132,11 +139,17 @@
   </style>
 </head>
 <body class="locked">
-  <div class="door-screen" id="doors"><div class="door left"></div><div class="door right"></div></div>
-  <div class="door-mark" id="doorMark"><span>F & Z</span></div>
+  <div class="door-screen" id="doors">
+    <div class="door left"><span class="door-word">Wedding</span><span class="door-handle"></span></div>
+    <div class="door right"><span class="door-word">Invitation</span><span class="door-handle"></span></div>
+  </div>
+  <div class="door-open-wrap" id="doorOpenWrap">
+    <button class="open-invitation-btn" id="openInvitationBtn">Open Invitation</button>
+    <small>Tap to open with music</small>
+  </div>
 
   <button class="music" id="musicBtn" aria-label="Toggle music">♪</button>
-  <audio id="music" loop preload="none"><source src="assets/music.mp3" type="audio/mpeg"></audio>
+  <audio id="music" loop preload="auto"><source src="wedding-music.mp3" type="audio/mpeg"></audio>
 
   <main class="page" id="page">
     <section class="hero section">
@@ -156,7 +169,7 @@
     <section class="section reveal" id="countdown">
       <div class="section-head">
         <div class="eyebrow">The celebration begins in</div>
-        <h2>Barat Countdown</h2>
+        <h2>Countdown</h2>
         <div class="ornament"></div>
       </div>
       <div class="countdown-grid">
@@ -175,42 +188,59 @@
       </div>
       <div class="event-list">
         <article class="event-card reveal">
+          <div class="event-label">Mayun</div>
+          <h3>Sunday, 26 July 2026</h3>
+          <div class="detail"><span>Time</span><strong>Evening</strong></div>
+          <div class="detail"><span>Venue</span><strong>Our Residence<br>Muzaffar Town, Jhelum</strong></div>
+          <a class="location-btn" href="https://www.google.com/maps/search/?api=1&query=Muzaffar+Town+Jhelum" target="_blank" rel="noopener">View Location</a>
+        </article>
+        <article class="event-card reveal">
           <div class="event-label">Mehndi</div>
           <h3>Tuesday, 28 July 2026</h3>
           <div class="detail"><span>Time</span><strong>6:00 PM onwards</strong></div>
-          <div class="detail"><span>Venue</span><strong>Add Mehndi Venue<br>Jhelum, Pakistan</strong></div>
-          <a class="location-btn" href="#" target="_blank" rel="noopener">View Location</a>
+          <div class="detail"><span>Venue</span><strong>AL HASSAN Marquee<br>Jhelum, Pakistan</strong></div>
+          <a class="location-btn" href="https://share.google/bBzC06gI1ly7Efvhw" target="_blank" rel="noopener">View Location</a>
+        </article>
+        <article class="event-card reveal">
+          <div class="event-label">Sehra Bandi</div>
+          <h3>Wednesday, 29 July 2026</h3>
+          <div class="detail"><span>Time</span><strong>5:00 PM</strong></div>
+          <div class="detail"><span>Venue</span><strong>Our Residence<br>Muzaffar Town, Jhelum</strong></div>
+          <a class="location-btn" href="https://www.google.com/maps/search/?api=1&query=Muzaffar+Town+Jhelum" target="_blank" rel="noopener">View Location</a>
         </article>
         <article class="event-card reveal">
           <div class="event-label">Barat</div>
           <h3>Thursday, 30 July 2026</h3>
-          <div class="detail"><span>Arrival</span><strong>6:00 PM</strong></div>
-          <div class="detail"><span>Venue</span><strong>Add Barat Venue<br>Jhelum, Pakistan</strong></div>
-          <a class="location-btn" href="#" target="_blank" rel="noopener">View Location</a>
+          <div class="detail"><span>Arrival</span><strong>7:00 PM</strong></div>
+          <div class="detail"><span>Venue</span><strong>Amar Palace<br>Mirpur</strong></div>
+          <a class="location-btn" href="https://share.google/K6mQtkw7MRY8TPV0L" target="_blank" rel="noopener">View Location</a>
         </article>
         <article class="event-card reveal">
           <div class="event-label">Walima</div>
           <h3>Friday, 31 July 2026</h3>
-          <div class="detail"><span>Reception</span><strong>7:30 PM onwards</strong></div>
-          <div class="detail"><span>Venue</span><strong>Add Walima Venue<br>Jhelum, Pakistan</strong></div>
-          <a class="location-btn" href="#" target="_blank" rel="noopener">View Location</a>
+          <div class="detail"><span>Reception</span><strong>7:00 PM onwards</strong></div>
+          <div class="detail"><span>Venue</span><strong>Taj Palace<br>Jhelum, Pakistan</strong></div>
+          <a class="location-btn" href="https://share.google/Cju5awqMiC3Y7Lajw" target="_blank" rel="noopener">View Location</a>
         </article>
       </div>
     </section>
 
     <section class="section reveal" id="family">
       <div class="family-box">
-        <div class="eyebrow">Waiting Eyes</div>
-        <h2>Our Family</h2>
-        <div class="script">With love and anticipation</div>
-        <div class="family-names">Chachu Name One<br>Chachu Name Two<br>Chachu Name Three</div>
-        <p class="family-note">We look forward to celebrating this beautiful occasion with you.</p>
+        <h2 class="waiting-eyes-title">Waiting Eyes</h2>
+        <div class="family-names">
+          Mr. &amp; Mrs. Naseer<br>
+          Mr. &amp; Mrs. Zaheer Ahmed <span style="color:var(--gold);font-size:.82em">(Late)</span><br>
+          Mr. &amp; Mrs. Zamir Ahmed<br>
+          Mr. &amp; Mrs. Toqeer Akhter<br>
+          Mr. &amp; Mrs. Tanveer Husain
+        </div>
       </div>
     </section>
 
     <section class="section reveal" id="memory">
       <div class="memory-box">
-        <div class="memory-photo"><div class="photo-placeholder">Add the photo as<br><strong>assets/ustad-zaheer.jpg</strong></div></div>
+        <div class="memory-photo"><img src="ustad-zaheer.jpg" alt="Ustad Zaheer"></div>
         <div class="memory-copy">
           <div class="eyebrow">In Loving Memory Of</div>
           <h2>Ustad Zaheer</h2>
@@ -226,18 +256,36 @@
 
   <script>
     const doors=document.getElementById('doors');
-    const doorMark=document.getElementById('doorMark');
     const page=document.getElementById('page');
-    window.addEventListener('load',()=>{
-      setTimeout(()=>{doors.classList.add('open');doorMark.classList.add('fade')},450);
-      setTimeout(()=>{doors.classList.add('hide');doorMark.style.display='none';page.classList.add('ready');document.body.classList.remove('locked')},1650);
+    const doorOpenWrap=document.getElementById('doorOpenWrap');
+    const openInvitationBtn=document.getElementById('openInvitationBtn');
+    const music=document.getElementById('music');
+    const musicBtn=document.getElementById('musicBtn');
+
+    openInvitationBtn.addEventListener('click',async()=>{
+      openInvitationBtn.disabled=true;
+      doorOpenWrap.classList.add('fade');
+      try{
+        music.volume=.7;
+        await music.play();
+        musicBtn.textContent='❚❚';
+      }catch(e){
+        musicBtn.textContent='♪';
+      }
+      setTimeout(()=>doors.classList.add('open'),120);
+      setTimeout(()=>{
+        doors.classList.add('hide');
+        doorOpenWrap.style.display='none';
+        page.classList.add('ready');
+        document.body.classList.remove('locked');
+      },1550);
     });
 
     const reveals=document.querySelectorAll('.reveal:not(.visible)');
     const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.14});
     reveals.forEach(el=>observer.observe(el));
 
-    const target=new Date('2026-07-30T18:00:00+05:00').getTime();
+    const target=new Date('2026-07-28T18:00:00+05:00').getTime();
     function updateCountdown(){
       const diff=Math.max(0,target-Date.now());
       const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
@@ -248,7 +296,6 @@
     }
     updateCountdown();setInterval(updateCountdown,1000);
 
-    const music=document.getElementById('music');const musicBtn=document.getElementById('musicBtn');
     musicBtn.addEventListener('click',async()=>{
       try{if(music.paused){await music.play();musicBtn.textContent='❚❚'}else{music.pause();musicBtn.textContent='♪'}}catch(e){musicBtn.textContent='♪'}
     });
